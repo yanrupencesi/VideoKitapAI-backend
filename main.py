@@ -36,6 +36,16 @@ class AIAskRequest(BaseModel):
 class AIAskResponse(BaseModel):
     answer: str
 
+class ProfileRequest(BaseModel):
+    goal: str
+    challenge: str
+    time_per_day: Optional[str] = None
+
+class ProfileRecommendationResponse(BaseModel):
+    book_id: int
+    book_title: str
+    questions: List[str]
+
 # ------------------ Basit Kitap Veritabanı ------------------ #
 
 BOOKS: List[Book] = [
@@ -79,6 +89,79 @@ def get_book(book_id: int) -> Optional[Book]:
             return b
     return None
 
+# ------------------ Profilden kitap + soru önerisi ------------------ #
+
+def recommend_book_and_questions(goal: str, challenge: str):
+    """
+    Kullanıcının hedef ve zorluk bilgilerine göre
+    önerilen kitabı ve kitabın kişiye özel sorularını döner.
+    """
+    goal = (goal or "").lower()
+    challenge = (challenge or "").lower()
+
+    # --- ZENGİN BABA YOKSUL BABA ---
+    if ("zengin" in goal or "para" in goal or "finans" in goal or
+        "zengin" in challenge or "para" in challenge or "borç" in challenge):
+        return {
+            "book_id": 4,
+            "book_title": "Zengin Baba Yoksul Baba",
+            "questions": [
+                "Finansal hedefime ulaşmak için nereden başlamalıyım?",
+                "Şu an yaşadığım finansal zorlukları bu kitaba göre nasıl aşabilirim?",
+                "Bugün uygulayabileceğim 2-3 küçük finansal alışkanlık önerir misin?"
+            ]
+        }
+
+    # --- ATOMİK ALIŞKANLIKLAR ---
+    if ("disiplin" in goal or "alışkanlık" in goal or "düzen" in goal or
+        "erte" in challenge or "motivasyon" in challenge):
+        return {
+            "book_id": 1,
+            "book_title": "Atomik Alışkanlıklar",
+            "questions": [
+                "Hedefime ulaşmak için hangi küçük alışkanlıklarla başlayabilirim?",
+                "Erteleme sorunumu bu kitabı kullanarak nasıl çözebilirim?",
+                "Bugün uygulayabileceğim 3 küçük alışkanlık önerir misin?"
+            ]
+        }
+
+    # --- AKIŞ (FLOW) ---
+    if ("odak" in goal or "akış" in goal or "flow" in goal or
+        "dikkat" in challenge or "konsant" in challenge):
+        return {
+            "book_id": 3,
+            "book_title": "Akış (Flow)",
+            "questions": [
+                "Daha fazla akış yaşayabilmek için nereden başlamalıyım?",
+                "Odaklanma sorunuma göre ne önerirsin?",
+                "Bugün uygulayabileceğim 2-3 odak egzersizi verebilir misin?"
+            ]
+        }
+
+    # --- SAVAŞ SANATI ---
+    if ("strateji" in goal or "rekabet" in goal or "liderlik" in goal or
+        "rekabet" in challenge or "analiz" in challenge or "yarış" in challenge):
+        return {
+            "book_id": 2,
+            "book_title": "Savaş Sanatı",
+            "questions": [
+                "Stratejik düşünme becerimi geliştirmek için nereden başlamalıyım?",
+                "Şu an yaşadığım zorluklara hangi stratejiler daha uygun olur?",
+                "Bugün uygulayabileceğim 2-3 basit strateji örneği verebilir misin?"
+            ]
+        }
+
+    # --- HİÇBİRİ UYMAZSA GENEL KİŞİSEL GELİŞİM ---
+    return {
+        "book_id": 1,
+        "book_title": "Atomik Alışkanlıklar",
+        "questions": [
+            "Hedefime ulaşmak için hangi temel adımlarla başlamalıyım?",
+            "Bu kitap bana nasıl yardımcı olabilir?",
+            "Bugün uygulayabileceğim 2-3 küçük adım önerir misin?"
+        ]
+    }
+
 # ------------------ Endpoint'ler ------------------ #
 
 @app.get("/")
@@ -88,6 +171,16 @@ def root():
 @app.get("/books", response_model=List[Book])
 def list_books():
     return BOOKS
+
+@app.post("/profile/recommend", response_model=ProfileRecommendationResponse)
+def profile_recommend(req: ProfileRequest):
+    """
+    Kullanıcının profil bilgilerine göre:
+    - Önerilen kitabı
+    - Kitaba göre 3 soru önerisini döner.
+    """
+    result = recommend_book_and_questions(req.goal, req.challenge)
+    return ProfileRecommendationResponse(**result)
 
 @app.post("/ai/ask", response_model=AIAskResponse)
 def ai_ask(req: AIAskRequest):
