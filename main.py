@@ -81,6 +81,16 @@ BOOKS: List[Book] = [
             "ve hareket ettiğini anlatan bir finansal zihinset kitabı."
         ),
     ),
+    Book(
+        id=5,
+        title="Düşün ve Zengin Ol",
+        description=(
+            "Napoleon Hill'in klasik eseri. Başarı ve zenginliği sadece para değil, "
+            "düşünce gücü, inanç, kararlılık ve eylem üzerinden anlatır. "
+            "Hedef belirleme, motivasyon ve özgüven üzerine güçlü prensipler sunar."
+        ),
+    ),
+
 ]
 
 def get_book(book_id: int) -> Optional[Book]:
@@ -150,7 +160,21 @@ def recommend_book_and_questions(goal: str, challenge: str):
                 "Bugün uygulayabileceğim 2-3 basit strateji örneği verebilir misin?"
             ]
         }
-
+    
+    # --- DÜŞÜN VE ZENGİN OL ---
+    if ("başarı" in goal or "kariyer" in goal or "hedef" in goal or
+        "özgüven" in goal or "motivasyon" in goal or
+        "başarı" in challenge or "motivasyon" in challenge):
+        return {
+            "book_id": 5,
+            "book_title": "Düşün ve Zengin Ol",
+            "questions": [
+                "Bu kitap, hedef belirleme konusunda bana nasıl yardımcı olabilir?",
+                "Düşünce gücünü kullanarak motivasyonumu nasıl artırabilirim?",
+                "Başarı için bugün uygulayabileceğim 3 adımı söyleyebilir misin?"
+            ]
+        }
+    
     # --- HİÇBİRİ UYMAZSA GENEL KİŞİSEL GELİŞİM ---
     return {
         "book_id": 1,
