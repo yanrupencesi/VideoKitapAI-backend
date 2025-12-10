@@ -113,8 +113,7 @@ BOOKS: List[Book] = [
         title="Pür Dikkat (Deep Work)",
         description=(
             "Dağılmış dikkati toparlayıp, kesintisiz odaklanma ile kaliteli işler üretmeyi "
-            "anlatan; dikkat ekonomisi çağında derin çalışmanın önemini ve pratik yöntemlerini "
-            "sunuyor."
+            "anlatan; dikkat ekonomisi çağında derin çalışmanın önemini ve pratik yöntemlerini sunar."
         ),
     ),
 ]
