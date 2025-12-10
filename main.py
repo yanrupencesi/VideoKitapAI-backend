@@ -133,71 +133,30 @@ def recommend_book_and_questions(goal: str, challenge: str):
     """
     goal = (goal or "").lower()
     challenge = (challenge or "").lower()
+    text = f"{goal} {challenge}"
 
-    # --- ZENGİN BABA YOKSUL BABA ---
-    if ("zengin" in goal or "para" in goal or "finans" in goal or
-        "zengin" in challenge or "para" in challenge or "borç" in challenge):
+    # --- ZENGİN BABA YOKSUL BABA (para / finans / borç) ---
+    if any(k in text for k in ["para", "finans", "borç", "gelir", "yatırım", "maddi", "fatura", "borçlar"]):
         return {
             "book_id": 4,
             "book_title": "Zengin Baba Yoksul Baba",
             "questions": [
-                "Finansal hedefime ulaşmak için nereden başlamalıyım?",
-                "Şu an yaşadığım finansal zorlukları bu kitaba göre nasıl aşabilirim?",
-                "Bugün uygulayabileceğim 2-3 küçük finansal alışkanlık önerir misin?"
-            ]
+                "Bu kitap, para ve zenginlik hakkında bakış açımı nasıl değiştirebilir?",
+                "Finansal özgürlük için bugün başlayabileceğim en basit adımlar neler?",
+                "Gelirimi artırmak veya daha bilinçli harcama yapmak için bu kitaptan hangi prensipleri uygulayabilirim?"
+            ],
         }
 
-    # --- ATOMİK ALIŞKANLIKLAR ---
-    if ("disiplin" in goal or "alışkanlık" in goal or "düzen" in goal or
-        "erte" in challenge or "motivasyon" in challenge):
-        return {
-            "book_id": 1,
-            "book_title": "Atomik Alışkanlıklar",
-            "questions": [
-                "Hedefime ulaşmak için hangi küçük alışkanlıklarla başlayabilirim?",
-                "Erteleme sorunumu bu kitabı kullanarak nasıl çözebilirim?",
-                "Bugün uygulayabileceğim 3 küçük alışkanlık önerir misin?"
-            ]
-        }
-
-    # --- AKIŞ (FLOW) ---
-    if ("odak" in goal or "akış" in goal or "flow" in goal or
-        "dikkat" in challenge or "konsant" in challenge):
-        return {
-            "book_id": 3,
-            "book_title": "Akış (Flow)",
-            "questions": [
-                "Daha fazla akış yaşayabilmek için nereden başlamalıyım?",
-                "Odaklanma sorunuma göre ne önerirsin?",
-                "Bugün uygulayabileceğim 2-3 odak egzersizi verebilir misin?"
-            ]
-        }
-
-    # --- SAVAŞ SANATI ---
-    if ("strateji" in goal or "rekabet" in goal or "liderlik" in goal or
-        "rekabet" in challenge or "analiz" in challenge or "yarış" in challenge):
-        return {
-            "book_id": 2,
-            "book_title": "Savaş Sanatı",
-            "questions": [
-                "Stratejik düşünme becerimi geliştirmek için nereden başlamalıyım?",
-                "Şu an yaşadığım zorluklara hangi stratejiler daha uygun olur?",
-                "Bugün uygulayabileceğim 2-3 basit strateji örneği verebilir misin?"
-            ]
-        }
-    
-    # --- DÜŞÜN VE ZENGİN OL ---
-    if ("başarı" in goal or "kariyer" in goal or "hedef" in goal or
-        "özgüven" in goal or "motivasyon" in goal or
-        "başarı" in challenge or "motivasyon" in challenge):
+    # --- DÜŞÜN VE ZENGİN OL (başarı / kariyer / motivasyon / finansal hedef) ---
+    if any(k in text for k in ["zengin olmak", "finansal özgürlük", "başarı", "kariyer", "özgüven", "motivasyon"]):
         return {
             "book_id": 5,
             "book_title": "Düşün ve Zengin Ol",
             "questions": [
-                "Bu kitap, hedef belirleme konusunda bana nasıl yardımcı olabilir?",
+                "Finansal hedefime ulaşabilmem için bu kitaptan hangi adımlarla başlamalıyım?",
                 "Düşünce gücünü kullanarak motivasyonumu nasıl artırabilirim?",
                 "Başarı için bugün uygulayabileceğim 3 adımı söyleyebilir misin?"
-            ]
+            ],
         }
 
     # --- ALIŞKANLIKLARIN GÜCÜ (alışkanlık + iş/kurum) ---
@@ -206,12 +165,24 @@ def recommend_book_and_questions(goal: str, challenge: str):
             "book_id": 6,
             "book_title": "Alışkanlıkların Gücü",
             "questions": [
-                "Bu kitap, alışkanlık döngüsünü (ipucu–rutın–ödül) anlamamda nasıl yardımcı olabilir?",
+                "Bu kitap, alışkanlık döngüsünü (ipucu–rutin–ödül) anlamamda nasıl yardımcı olabilir?",
                 "İş ve özel hayatımdaki kötü alışkanlıkları değiştirmek için hangi adımları uygulamalıyım?",
                 "Bugün hayatımda test edebileceğim küçük bir alışkanlık deneyi önerir misin?"
             ],
         }
-    
+
+    # --- ATOMİK ALIŞKANLIKLAR (kişisel alışkanlık / erteleme) ---
+    if any(k in text for k in ["alışkanlık", "disiplin", "düzen", "ertelemek", "erteleme", "rutin"]):
+        return {
+            "book_id": 1,
+            "book_title": "Atomik Alışkanlıklar",
+            "questions": [
+                "Hedefime ulaşmak için hangi küçük alışkanlıklarla başlayabilirim?",
+                "Erteleme sorunumu bu kitabı kullanarak nasıl çözebilirim?",
+                "Bugün uygulayabileceğim 3 küçük alışkanlık önerir misin?"
+            ],
+        }
+
     # --- PÜR DİKKAT (odak / verimlilik / derin çalışma) ---
     if any(k in text for k in ["odak", "odaklanmak", "verimlilik", "derin çalışma", "deep work", "üretkenlik", "dikkat dağınıklığı", "sosyal medya"]):
         return {
@@ -221,6 +192,18 @@ def recommend_book_and_questions(goal: str, challenge: str):
                 "Bu kitap, dağılmış dikkatimi toparlayıp daha derin çalışmam için bana nasıl yol gösterir?",
                 "Sosyal medya ve bildirimler yüzünden odaklanamıyorum, Pür Dikkat'e göre nereden başlamalıyım?",
                 "Bugün uygulayabileceğim 2–3 'derin çalışma' seansı planı verebilir misin?"
+            ],
+        }
+
+    # --- AKIŞ (FLOW) (mutluluk / keyif / yaratıcılık) ---
+    if any(k in text for k in ["akış hali", "akış", "flow", "yaratıcılık", "yaratıcı", "mutlu olmak", "tutku", "keyif almak"]):
+        return {
+            "book_id": 3,
+            "book_title": "Akış (Flow)",
+            "questions": [
+                "Akış hali nedir ve benim hayatımda daha çok akış yaşayabilmem için nereden başlamalıyım?",
+                "Odaklanma veya motivasyon düşüşü yaşadığımda akış haline dönmek için neler yapabilirim?",
+                "Bugün akış haline yaklaşmak için yapabileceğim 2–3 küçük egzersiz ne?"
             ],
         }
 
@@ -236,7 +219,19 @@ def recommend_book_and_questions(goal: str, challenge: str):
             ],
         }
 
-    # --- HİÇBİRİ UYMAZSA GENEL KİŞİSEL GELİŞİM ---
+    # --- SAVAŞ SANATI (strateji / rekabet / liderlik) ---
+    if any(k in text for k in ["strateji", "taktik", "rekabet", "liderlik", "savaş", "rakip"]):
+        return {
+            "book_id": 2,
+            "book_title": "Savaş Sanatı",
+            "questions": [
+                "Stratejik düşünme becerimi geliştirmek için nereden başlamalıyım?",
+                "Şu an yaşadığım zorluklara hangi stratejiler daha uygun olur?",
+                "Bugün uygulayabileceğim 2-3 basit strateji örneği verebilir misin?"
+            ],
+        }
+
+    # --- HİÇBİRİ UYMAZSA GENEL (Atomik Alışkanlıklar) ---
     return {
         "book_id": 1,
         "book_title": "Atomik Alışkanlıklar",
@@ -244,8 +239,9 @@ def recommend_book_and_questions(goal: str, challenge: str):
             "Hedefime ulaşmak için hangi temel adımlarla başlamalıyım?",
             "Bu kitap bana nasıl yardımcı olabilir?",
             "Bugün uygulayabileceğim 2-3 küçük adım önerir misin?"
-        ]
+        ],
     }
+
 
 # ------------------ Endpoint'ler ------------------ #
 
