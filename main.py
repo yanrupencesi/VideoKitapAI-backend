@@ -90,7 +90,33 @@ BOOKS: List[Book] = [
             "Hedef belirleme, motivasyon ve özgüven üzerine güçlü prensipler sunar."
         ),
     ),
-
+    Book(
+        id=6,
+        title="Alışkanlıkların Gücü",
+        description=(
+            "Gündelik hayat ve iş hayatındaki alışkanlıkların, ipucu-rutin-ödül döngüsü üzerinden "
+            "nasıl oluştuğunu ve bu döngüyü değiştirerek hem bireysel hem kurumsal dönüşümün "
+            "nasıl sağlanabileceğini anlatır."
+        ),
+    ),
+    Book(
+        id=7,
+        title="İknanın Psikolojisi",
+        description=(
+            "İkna ve etkilemenin psikolojik prensiplerini (karşılıklılık, kıtlık, sosyal kanıt, "
+            "otorite, tutarlılık vb.) açıklayan; satış, pazarlama ve günlük iletişime uygulanabilen "
+            "klasik bir sosyal psikoloji kitabı."
+        ),
+    ),
+    Book(
+        id=8,
+        title="Pür Dikkat (Deep Work)",
+        description=(
+            "Dağılmış dikkati toparlayıp, kesintisiz odaklanma ile kaliteli işler üretmeyi "
+            "anlatan; dikkat ekonomisi çağında derin çalışmanın önemini ve pratik yöntemlerini "
+            "sunuyor."
+        ),
+    ),
 ]
 
 def get_book(book_id: int) -> Optional[Book]:
@@ -174,7 +200,43 @@ def recommend_book_and_questions(goal: str, challenge: str):
                 "Başarı için bugün uygulayabileceğim 3 adımı söyleyebilir misin?"
             ]
         }
+
+    # --- ALIŞKANLIKLARIN GÜCÜ (alışkanlık + iş/kurum) ---
+    if "alışkanlık" in text and any(k in text for k in ["iş", "ofis", "şirket", "kurumsal", "organizasyon", "ekip"]):
+        return {
+            "book_id": 6,
+            "book_title": "Alışkanlıkların Gücü",
+            "questions": [
+                "Bu kitap, alışkanlık döngüsünü (ipucu–rutın–ödül) anlamamda nasıl yardımcı olabilir?",
+                "İş ve özel hayatımdaki kötü alışkanlıkları değiştirmek için hangi adımları uygulamalıyım?",
+                "Bugün hayatımda test edebileceğim küçük bir alışkanlık deneyi önerir misin?"
+            ],
+        }
     
+    # --- PÜR DİKKAT (odak / verimlilik / derin çalışma) ---
+    if any(k in text for k in ["odak", "odaklanmak", "verimlilik", "derin çalışma", "deep work", "üretkenlik", "dikkat dağınıklığı", "sosyal medya"]):
+        return {
+            "book_id": 8,
+            "book_title": "Pür Dikkat (Deep Work)",
+            "questions": [
+                "Bu kitap, dağılmış dikkatimi toparlayıp daha derin çalışmam için bana nasıl yol gösterir?",
+                "Sosyal medya ve bildirimler yüzünden odaklanamıyorum, Pür Dikkat'e göre nereden başlamalıyım?",
+                "Bugün uygulayabileceğim 2–3 'derin çalışma' seansı planı verebilir misin?"
+            ],
+        }
+
+    # --- İKNANIN PSİKOLOJİSİ (ikna / satış / pazarlama / iletişim) ---
+    if any(k in text for k in ["ikna", "satış", "pazarlama", "insanları ikna", "insanları etkilemek", "sosyal kanıt", "otorite", "müşteri"]):
+        return {
+            "book_id": 7,
+            "book_title": "İknanın Psikolojisi",
+            "questions": [
+                "İknanın Psikolojisi'ndeki temel ikna prensiplerini günlük hayatımda nasıl kullanabilirim?",
+                "Satış veya pazarlama alanında çalışıyorum, bu kitap bana müşterilerle iletişimde nasıl avantaj sağlar?",
+                "İnsanları manipüle etmeden, etik şekilde daha etkileyici olmak için neler yapabilirim?"
+            ],
+        }
+
     # --- HİÇBİRİ UYMAZSA GENEL KİŞİSEL GELİŞİM ---
     return {
         "book_id": 1,
